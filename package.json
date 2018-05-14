@@ -1,0 +1,15 @@
+{
+  "name": "pacmap",
+  "version": "1.0.0",
+  "description": "Share your location with friends",
+  "main": "index.js",
+  "scripts": {
+      "start": "node server.js"
+  },
+  "author": "Lucas Kostka",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.1",
+    "ws": "^5.1.1"
+  }
+}

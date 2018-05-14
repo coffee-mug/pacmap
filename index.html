@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PacMap</title>
+  <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+</head>
+<body>
+  <style>
+    body {
+      margin: 0px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #29335C;
+      color: #DB2B39;
+      text-shadow: 1px 2px #fee;
+      height: 5vh;
+    }
+    header, h1 {
+      margin: 0 auto;
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Pacifico', cursive;
+    }
+  
+  </style>
+  <header>
+    <h1>PacMap</h1>
+  </header>
+  <div id="map" style="height: 95vh"></div>
+  <script src="https://www.gstatic.com/firebasejs/5.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.0.2/firebase-database.js"></script>
+  <script src="/client/fire.js"></script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmMJTCWMush-iNX1cujxxzjaIf8kkhFgY&callback=initMap"></script>
+  </body>
+</html>
