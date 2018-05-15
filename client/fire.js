@@ -15,12 +15,28 @@ var pacMap = {
     }
     this.room = roomName;
     this.ref = firebase.database().ref('rooms/' + this.room);
+
     this.uuid = this.getUuid();
-    theMap.createMap()
+
+    // set a marker for every connected users
+    this.ref
+        .once('value')
+        .then(function(snapshots) {
+          snapshots.forEach(function(snapshot) {
+            var user = snapshot.val(),
+                userId = snapshot.key;
+            console.log("Found connected user", user.coords, userId);
+            // delegate to gMap
+            theMap.setMarker(userId, user.coords.lat, user.coords.lng);
+          });
+        });
 
     // Start watching user's position
     var bar = function(pos) { return this.watchCoords(pos) }.bind(this);
     navigator.geolocation.watchPosition(bar, function(e) { console.log(e) });
+
+    // Show map
+    theMap.createMap()
 
     // Listen for change to the database
     this.setupListeners();
@@ -38,7 +54,13 @@ var pacMap = {
 
   },
   watchCoords: function(pos) {
-    this.ref.child(this.uuid).set({ coords: { lat: pos.coords.latitude, lng: pos.coords.longitude }, timestamp: +new Date()});
+    var coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+    this.ref.child(this.uuid).set({ coords: coords, timestamp: +new Date()});
+
+    // Center map on newly obtained user's position
+    theMap.updateMapCenter(coords);
+
     theMap.setMarker(this.uuid, pos.coords.latitude, pos.coords.longitude);
   },
   xorshift: function() {
@@ -99,10 +121,13 @@ var pacMap = {
 var theMap = {
   createMap: function() {
     this.map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 0, lng: 0},
-      zoom: 3
+      center: {lat: 0, lng: 0},
+      zoom: 18 
       })
     this.markers = {};
+  },
+  updateMapCenter: function(centerCoord) {
+    this.map.setCenter(centerCoord);
   },
   setMarker: function(id, lat, lng) {
     var marker;
